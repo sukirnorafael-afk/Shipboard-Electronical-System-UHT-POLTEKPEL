@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Shipboard Electronical System — Modul 1–18 | Rafael Sukirno, CE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Webapp pembelajaran Shipboard Electronical System. Modul 1–18, popup detail, referensi IMO, SOLAS, MARPOL, STCW, BKI, IACS.">
+<style>
+:root{--bg:#eef3f9;--card:#fff;--soft:#f4f8fc;--tx:#0f1c2b;--mu:#5b6b7c;--ac:#0b6bcb;--ac2:#e3effc;--bd:#d8e2ee;--nav:rgba(255,255,255,.9);--ok:#0f9d58;--danger:#dc2626;--warn:#d97706;--sh:0 6px 22px rgba(15,35,60,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b131c;--card:#131f2c;--soft:#101b27;--tx:#e6eef7;--mu:#93a6b8;--ac:#4ea8f7;--ac2:#16293c;--bd:#22344a;--nav:rgba(19,31,44,.92);--sh:0 6px 22px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--ac)}
+.nav{position:sticky;top:0;z-index:60;background:var(--nav);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);padding-top:env(safe-area-inset-top)}
+.nav-in{display:flex;align-items:center;gap:8px;padding:9px 14px;overflow-x:auto;scrollbar-width:none}.nav-in::-webkit-scrollbar{display:none}
+.brand{font-weight:800;color:var(--ac);white-space:nowrap;display:flex;align-items:center;gap:7px;font-size:15px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px var(--ac2)}
+.chip{white-space:nowrap;padding:6px 13px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:13px;cursor:pointer;transition:.18s;font-family:inherit;text-decoration:none}
+.chip:hover{background:var(--ac);color:#fff;border-color:var(--ac);transform:translateY(-1px)}
+.chip.mini{font-size:12px;padding:5px 11px;font-weight:700}
+#themeBtn{margin-left:auto;flex:0 0 auto;padding:6px 11px}
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,#08203d 0%,#0e5b8a 48%,#0891b2 100%);padding:46px 20px 40px}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 18% 18%,rgba(255,255,255,.16),transparent 42%),radial-gradient(circle at 84% 68%,rgba(255,255,255,.12),transparent 46%)}
+.hero-in{max-width:1060px;margin:auto;position:relative;z-index:1}
+.hero h1{margin:0 0 8px;font-size:clamp(24px,4.2vw,38px);line-height:1.15;letter-spacing:-.5px}
+.hero h1 span{color:#7fe3ff}
+.hero .sub{font-size:clamp(13.5px,1.7vw,16px);opacity:.94;max-width:820px}
+.hero .who{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.hero .who span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);padding:6px 14px;border-radius:999px;font-size:12.5px}
+.search{margin-top:20px;display:flex;gap:8px;max-width:600px}
+.search input{flex:1;min-width:0;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.14);color:#fff;font-size:14px;font-family:inherit;outline:none}
+.search input::placeholder{color:rgba(255,255,255,.7)}
+.search input:focus{background:rgba(255,255,255,.22);border-color:#7fe3ff}
+.search button{padding:12px 20px;border-radius:12px;border:0;background:#7fe3ff;color:#062033;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+.search button:hover{background:#fff}
+main{max-width:1060px;margin:auto;padding:0 16px 70px}
+section{padding-top:34px}
+.sec-h{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:clamp(17px,2.4vw,21px)}
+.sec-h .n{background:var(--ac);color:#fff;font-size:12px;font-weight:800;padding:4px 11px;border-radius:999px;letter-spacing:.4px;flex:0 0 auto}
+.sec-d{color:var(--mu);font-size:13.5px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:12px}
+.card{position:relative;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 16px 14px;cursor:pointer;transition:.2s;box-shadow:var(--sh);overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--ac);transform:scaleY(0);transform-origin:top;transition:.22s}
+.card:hover{transform:translateY(-3px);border-color:var(--ac)}.card:hover::before{transform:scaleY(1)}
+.card .num{font-size:11.5px;font-weight:800;color:var(--ac);letter-spacing:.7px;text-transform:uppercase}
+.card h3{margin:3px 0 6px;font-size:15.5px;line-height:1.35}
+.card p{margin:0;font-size:13px;color:var(--mu)}
+.card .tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--ac2);color:var(--ac)}
+#ov{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;background:rgba(4,12,22,.62);backdrop-filter:blur(4px);overflow-y:auto;padding:18px 14px 60px}
+#ov.show{display:flex}
+#md{background:var(--card);border:1px solid var(--bd);border-radius:18px;width:100%;max-width:880px;box-shadow:0 30px 70px rgba(0,0,0,.35);animation:pop .28s cubic-bezier(.2,.9,.3,1.2);overflow:hidden;margin:auto}
+@keyframes pop{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+.md-h{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;gap:12px;padding:16px 18px;background:linear-gradient(135deg,#0b2545,#0e7490);color:#fff}
+.md-h .ttl{flex:1;min-width:0}
+.md-h h2{margin:0;font-size:clamp(16px,2.4vw,20px);line-height:1.3}
+.md-h .bdg{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.6px;background:rgba(255,255,255,.2);padding:2px 9px;border-radius:999px;margin-bottom:5px}
+.md-h .cl{flex:0 0 auto;border:0;background:rgba(255,255,255,.18);color:#fff;width:34px;height:34px;border-radius:10px;font-size:17px;cursor:pointer}
+.md-h .cl:hover{background:#ff5d5d}
+.md-b{padding:18px 20px 26px;font-size:14.5px}
+.md-b .lead{font-size:14.5px;background:var(--soft);border-left:4px solid var(--ac);padding:12px 14px;border-radius:0 10px 10px 0;margin:0 0 6px;color:var(--tx)}
+.md-b h4{margin:22px 0 8px;font-size:15px;color:var(--ac);display:flex;align-items:center;gap:7px}
+.md-b h4::after{content:"";flex:1;height:1px;background:var(--bd)}
+.md-b p{margin:8px 0}
+.md-b ul,.md-b ol{margin:8px 0;padding-left:22px}
+.md-b li{margin:5px 0}
+.md-b ul.cap{list-style:none;padding:0}
+.md-b ul.cap li{position:relative;padding-left:26px;margin:7px 0}
+.md-b ul.cap li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ok);font-weight:900}
+.note{background:var(--ac2);border:1px solid var(--bd);border-radius:12px;padding:11px 14px;font-size:13.5px;margin:12px 0;color:var(--tx)}
+.note.warn{background:rgba(217,119,6,.12);border-color:rgba(217,119,6,.4)}
+.note.danger{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.35)}
+.note b{color:var(--tx)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:12px 0;padding:12px;background:var(--soft);border:1px dashed var(--bd);border-radius:12px}
+.flow span{background:var(--card);border:1px solid var(--bd);border-radius:9px;padding:5px 11px;font-size:12.5px;font-weight:700}
+.flow i{color:var(--ac);font-style:normal;font-weight:900}
+.tb{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0;border-radius:10px;overflow:hidden}
+.tb th,.tb td{border:1px solid var(--bd);padding:8px 11px;text-align:left;vertical-align:top}
+.tb th{background:var(--ac2);color:var(--ac);font-weight:800;font-size:12.5px}
+.tb tr:nth-child(even) td{background:var(--soft)}
+.scroll{overflow-x:auto}
+.lk{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.lk a{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;text-decoration:none;background:var(--ac2);color:var(--ac);border:1px solid var(--bd);transition:.18s}
+.lk a:hover{background:var(--ac);color:#fff}
+.lk.reg a{background:transparent;color:var(--mu);font-weight:600}
+.lk.reg a:hover{background:var(--ac);color:#fff}
+.code{font-family:ui-monospace,Consolas,monospace;background:var(--soft);border:1px solid var(--bd);border-radius:10px;padding:11px 14px;font-size:12.8px;overflow-x:auto;margin:10px 0;white-space:pre;line-height:1.55}
+footer{border-top:1px solid var(--bd);background:var(--card);padding:28px 18px 34px;text-align:center}
+footer .by{font-weight:800;color:var(--ac);font-size:15px}
+footer p{max-width:760px;margin:8px auto 0;font-size:12.8px;color:var(--mu)}
+@media(max-width:600px){.md-b{padding:16px 15px 24px;font-size:14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.card{padding:13px}.card h3{font-size:14px}.card p{display:none}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}.card p{display:block}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <div class="brand"><span class="dot"></span> SES · Modul 1–18</div>
+    <button class="chip" onclick="goTo('s1')">Ringkasan 1–7</button>
+    <button class="chip" onclick="goTo('s2')">UTS (M9)</button>
+    <button class="chip" onclick="goTo('s3')">Modul 8–17</button>
+    <button class="chip" onclick="goTo('s4')">UAS (M18)</button>
+    <button class="chip" onclick="goTo('s5')">TOT 6.09</button>
+    <button class="chip" onclick="goTo('s6')">Acuan</button>
+    <button class="chip mini" onclick="openMod(8)">M8</button>
+    <button class="chip mini" onclick="openMod(10)">M10</button>
+    <button class="chip mini" onclick="openMod(11)">M11</button>
+    <button class="chip mini" onclick="openMod(12)">M12</button>
+    <button class="chip mini" onclick="openMod(13)">M13</button>
+    <button class="chip mini" onclick="openMod(14)">M14</button>
+    <button class="chip mini" onclick="openMod(15)">M15</button>
+    <button class="chip mini" onclick="openMod(16)">M16</button>
+    <button class="chip mini" onclick="openMod(17)">M17</button>
+    <button class="chip" id="themeBtn" title="Ganti tema">🌙</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-in">
+    <h1>Shipboard <span>Electronical System</span></h1>
+    <div class="sub">Modul Ajar Modul 1–18 · Semester 3 · Penguatan UTS &amp; UAS · Berorientasi aplikasi permesinan kapal. Setiap kartu membuka <b>popup materi detail</b> dengan diagram alur, tabel, studi kasus troubleshooting, serta tombol pencarian ke Google, YouTube, Wikipedia, Pinterest, IMO, SOLAS, MARPOL, STCW, BKI, IACS.</div>
+    <div class="who">
+      <span>👨‍🏫 Penyusun &amp; Dosen: <b>Rafael Sukirno, CE</b></span>
+      <span>🎓 TRPK 3A UHT Surabaya</span>
+      <span>⚓ Teknika Poltekpel Surabaya</span>
+    </div>
+    <form class="search" onsubmit="doSearch(event)">
+      <input id="q" type="search" placeholder="Cari topik: PLC, ME-C, flame failure, CPP, IACMS, relay…">
+      <button type="submit">Cari 🔎</button>
+    </form>
+  </div>
+</header>
+
+<main>
+  <section id="s1">
+    <h2 class="sec-h"><span class="n">I</span> Ringkasan Modul 1–7 (bekal UTS)</h2>
+    <p class="sec-d">Materi fundamental yang sudah dilaksanakan — dipadatkan sebagai penguat. Modul 8 (IC &amp; LSI) dibahas lengkap di Bagian III.</p>
+    <div class="grid" id="g1"></div>
+  </section>
+
+  <section id="s2">
+    <h2 class="sec-h"><span class="n">II</span> Modul 9 — Ujian Tengah Semester</h2>
+    <p class="sec-d">Evaluasi Modul 1–8: kognitif, uraian, dan analisis aplikasi kapal.</p>
+    <div class="grid" id="g2"></div>
+  </section>
+
+  <section id="s3">
+    <h2 class="sec-h"><span class="n">III</span> Modul 8 &amp; 10–17 — Materi Detail</h2>
+    <p class="sec-d">Inti pengembangan kompetensi: gerbang logika, memori &amp; CPU, relay &amp; IACMS, PLC, kontrol elektronik Main Engine, boiler &amp; mesin bantu, sampai integrasi flowchart sistem.</p>
+    <div class="grid" id="g3"></div>
+  </section>
+
+  <section id="s4">
+    <h2 class="sec-h"><span class="n">IV</span> Modul 18 — Ujian Akhir Semester</h2>
+    <p class="sec-d">Evaluasi Modul 10–17 beserta rubrik penilaian analisis sistem.</p>
+    <div class="grid" id="g4"></div>
+  </section>
+
+  <section id="s5">
+    <h2 class="sec-h"><span class="n">V</span> Metode Pembelajaran &amp; Capaian</h2>
+    <p class="sec-d">Penerapan TOT 6.09, peta kurikulum 1–18, dan target hasil belajar taruna.</p>
+    <div class="grid" id="g5"></div>
+  </section>
+
+  <section id="s6">
+    <h2 class="sec-h"><span class="n">VI</span> Acuan Kompetensi &amp; Regulasi</h2>
+    <p class="sec-d">Klik untuk menelusuri dokumen dan gambar resmi di sumber terkait.</p>
+    <div class="grid" id="g6"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="by">Rafael Sukirno, CE</div>
+  <p>Shipboard Electronical System — Modul Ajar 1–18 · TRPK 3A UHT Surabaya &amp; Taruna Teknika Poltekpel Surabaya.</p>
+  <p>Pemetaan pembelajaran mengacu pada kerangka kompetensi IMO Model Course 7.04 / 7.02 dan STCW Code Table A-III/1 / A-III/2. Dokumen ini bukan salinan resmi kurikulum IMO dan bukan pengganti RPS institusi. Nilai batas alarm, slowdown, dan shutdown aktual selalu mengikuti manual pabrikan serta ketentuan class (BKI, IACS, DNV, LR, dll).</p>
+</footer>
+
+<div id="ov" role="dialog" aria-modal="true">
+  <div id="md">
+    <div class="md-h">
+      <div class="ttl"><span class="bdg" id="mdBdg">MODUL</span><h2 id="mdTtl">Judul</h2></div>
+      <button class="cl" onclick="closeMod()" aria-label="Tutup">✕</button>
+    </div>
+    <div class="md-b" id="mdBody"></div>
+  </div>
+</div>
+
+<script>
+/* ==== helpers ==== */
+const enc=encodeURIComponent;
+const U={g:q=>'https://www.google.com/search?q='+enc(q),img:q=>'https://www.google.com/search?tbm=isch&q='+enc(q),yt:q=>'https://www.youtube.com/results?search_query='+enc(q),wp:q=>'https://en.wikipedia.org/w/index.php?search='+enc(q),pin:q=>'https://www.pinterest.com/search/pins/?q='+enc(q),site:(d,q)=>'https://www.google.com/search?q='+enc('site:'+d+' '+q)};
+const chips=q=>'<div class="lk">'+[['🔍 Google',U.g(q)],['🖼️ Gambar',U.img(q)],['▶️ YouTube',U.yt(q)],['📚 Wikipedia',U.wp(q)],['📌 Pinterest',U.pin(q)]].map(x=>'<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+'</a>').join('')+'</div>';
+const regs=q=>'<div class="lk reg">'+[['IMO','imo.org',''],['SOLAS','imo.org','SOLAS '],['MARPOL','imo.org','MARPOL '],['STCW','imo.org','STCW '],['BKI','bki.co.id',''],['IACS','iacs.org.uk',''],['DNV','dnv.com',''],['LR','lr.org',''],['ABS','eagle.org','']].map(x=>'<a href="'+U.site(x[1],x[2]+q)+'" target="_blank" rel="noopener">'+x[0]+'</a>').join('')+'</div>';
+const flow=items=>'<div class="flow">'+items.map((s,i)=>(i?'<i>→</i>':'')+'<span>'+s+'</span>').join('')+'</div>';
+const tbl=(h,r)=>'<div class="scroll"><table class="tb"><thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+r.map(row=>'<tr>'+row.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+const STD='STCW Code Table A-III/1 · IMO Model Course 7.04 — kompetensi operasional perwira jaga mesin.';
+
+/* ==== CONTENT DATA — unified format ==== */
+const D={};
+
+/* ---- summary modules 1-7 ---- */
+D[1]={t:'Atom, Unsur, Senyawa, Molekul, Aliran Elektron & Arus',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Atom = proton (+), neutron (0), elektron (−).','Aliran elektron: dari − ke +. Arus konvensional: dari + ke −.','Unsur: zat tunggal. Senyawa: gabungan unsur dengan perbandingan tetap. Molekul: gabungan atom.']},
+{h:'Besaran dasar'},
+{tbl:{h:['Besaran','Simbol','Satuan','Rumus'],r:[['Muatan','Q','Coulomb','Q = I·t'],['Arus','I','Ampere','I = Q/t'],['Tegangan','V','Volt','V = I·R'],['Daya','P','Watt','P = V·I = I²R']]}},
+{n:'Ketika motor pompa pendingin bekerja, arus mengalir melalui belitan stator membentuk medan magnet berputar. Inilah dasar semua pembahasan motor, generator, dan kontrol di modul selanjutnya.'},
+{c:'atom electron flow conventional current diagram'}]};
+
+D[2]={t:'Energi Atom & Konfigurasi Elektron',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Elektron menempati tingkat energi (kulit/orbital).','Konfigurasi elektron menggambarkan susunan elektron dalam atom.','Elektron valensi berada di kulit terluar dan menentukan sifat listrik bahan.']},
+{h:'Urutan pengisian (Aufbau)'},
+{code:'1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p …'},
+{tbl:{h:['Unsur','Z','Konfigurasi','Valensi'],r:[['Si','14','1s² 2s² 2p⁶ 3s² 3p²','4'],['Ge','32','… 3d¹⁰ 4s² 4p²','4'],['Cu','29','… 3d¹⁰ 4s¹','1']]}},
+{n:'Pemilihan isolator kabel (PVC, XLPE, EPR) dan kelas isolasi (A/B/F/H) berkaitan dengan sifat elektron dan ketahanan panas.'},
+{c:'electron configuration orbital silicon'}]};
+
+D[3]={t:'Definisi & Penggunaan Semikonduktor',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Daya hantar antara konduktor dan isolator, dapat dikendalikan.','Contoh: Silicon (Si), Germanium (Ge).','Dipakai pada dioda, transistor, IC, sensor, modul elektronik.']},
+{tbl:{h:['Jenis','Resistivitas','Celah energi','Contoh'],r:[['Konduktor','10⁻⁶–10⁻⁴','~0','Cu, Al'],['Semikonduktor','10⁻³–10³','1,1 (Si)','Si, Ge'],['Isolator','10⁸–10¹⁸','>5','SiO₂, PVC']]}},
+{n:'Mengapa silikon? Melimpah, murah, celah energi 1,1 eV stabil untuk suhu kamar mesin, dan membentuk lapisan SiO₂ alami sebagai isolator.'},
+{c:'semiconductor silicon wafer intrinsic'}]};
+
+D[4]={t:'Elektron Bebas, Intrinsik & Ekstrinsik',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Intrinsik: semikonduktor murni (n = p).','Ekstrinsik: diberi doping.','Tipe-N: elektron mayoritas (doping P, As, valensi 5).','Tipe-P: hole mayoritas (doping B, Ga, valensi 3).']},
+{n:'Semakin tinggi suhu, semakin banyak pasangan elektron-hole → konduktivitas naik dan arus bocor meningkat. Karena itu ventilasi panel dan heatsink sangat penting di kamar mesin.'},
+{c:'n type p type semiconductor doping animation'}]};
+
+D[5]={t:'Efek Fotoelektrik, Termoelektrik & Hall',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{tbl:{h:['Efek','Prinsip','Aplikasi kapal'],r:[['Fotoelektrik','Cahaya → respons listrik','Flame detector boiler, optical sensor'],['Termoelektrik','Beda suhu → tegangan','Thermocouple exhaust gas'],['Hall','Medan magnet → tegangan','Speed pickup, posisi camshaft']]}},
+{n:'<b>Rumus RPM dari pulsa:</b> RPM = (60 × f) / N. Contoh: f=300 pulsa/s, N=60 → RPM=300.'},
+{c:'photoelectric thermoelectric hall effect animation'}]};
+
+D[6]={t:'Sambungan P-N, Dioda & Transistor',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Sambungan P-N = dasar dioda.','Forward bias: arus mengalir setelah V > Vγ (0,7 V Si).','Reverse bias: arus bocor sangat kecil.','Transistor BJT = 2 sambungan P-N; dapat sebagai penguat atau sakelar.']},
+{n:'Dioda penyearah di power supply panel mengubah AC menjadi DC. Transistor di output PLC menggerakkan relay / solenoid valve.'},
+{c:'PN junction diode forward reverse bias transistor switch'}]};
+
+D[7]={t:'Thyristor',g:'Ringkasan',c:[
+{h:'Pokok Pemahaman'},
+{ul:['Jenis: SCR, TRIAC, DIAC, GTO.','Triggering via gate, latching dipertahankan oleh holding current.','SCR mati bila arus < holding current (AC: zero crossing; DC: komutasi).']},
+{tbl:{h:['Proteksi','Penyebab','Solusi'],r:[['dv/dt tinggi','Trigger palsu','Snubber RC'],['di/dt tinggi','Gate rusak','Induktor seri'],['Overvoltage','Kerusakan','Varistor / RC'],['Overcurrent','Kerusakan','Fuse semikonduktor']]}},
+{n:'Aplikasi kapal: konverter, soft starter motor, pengendali eksitasi, pengatur pemanas.'},
+{c:'thyristor SCR TRIAC working animation'}]};
+
+/* ---- MODULE 9 UTS ---- */
+D[9]={t:'Ujian Tengah Semester',g:'Evaluasi',c:[
+{h:'Materi yang Diujikan'},
+{ol:['Struktur atom & aliran elektron.','Konfigurasi elektron.','Semikonduktor intrinsik/ekstrinsik.','Efek foto/termo/Hall.','Sambungan P-N, dioda, transistor.','Thyristor.','IC &amp; LSI.']},
+{h:'Bobot Usulan'},
+{tbl:{h:['Bentuk','Bobot'],r:[['Pilihan ganda','50%'],['Uraian','30%'],['Analisis aplikasi kapal','20%'],['Total','100%']]}},
+{h:'Contoh Soal Analisis'},
+{ol:['Mengapa silikon dipakai untuk membuat komponen semikonduktor?','Apa perbedaan arus elektron dan arus konvensional?','Bagaimana dioda mengubah AC menjadi DC?','Mengapa transistor dapat dipakai sebagai sakelar?','Apa hubungan IC dengan sistem kontrol otomatis mesin kapal?']},
+{c:'semiconductor dioda transistor IC exam'}]};
+
+/* ---- MODULE 8: IC dan LSI ---- */
+D[8]={t:'IC dan LSI',g:'Lanjutan',c:[
+{p:'IC (<i>Integrated Circuit</i>) adalah jembatan dari elektronika dasar menuju sistem kontrol. Setelah memahami dioda, transistor, dan thyristor, Modul 8 menjelaskan bagaimana ribuan komponen itu disatukan dalam satu chip — dan mengapa chip itulah yang kelak menjadi PLC, governor, dan controller Main Engine.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan definisi IC dan LSI serta tingkat integrasi rangkaian.','Mengidentifikasi struktur, kemasan, dan cara membaca kode IC.','Membedakan IC analog dan IC digital beserta fungsi transistor di dalamnya.','Menjelaskan peran IC pada sistem kontrol dan monitoring kapal.','Menerapkan prosedur penanganan dan troubleshooting modul IC secara aman.']},
+{h:'1. Definisi IC dan LSI'},
+{p:'<b>IC (Integrated Circuit)</b> adalah sekumpulan komponen aktif (transistor, dioda) dan pasif (resistor, kapasitor) yang difabrikasi bersamaan pada satu substrat semikonduktor silikon, dihubungkan internal, dikemas dalam satu paket dengan kaki-kaki untuk disambung ke rangkaian luar.'},
+{p:'<b>LSI (Large Scale Integration)</b> bukan jenis komponen, melainkan <b>tingkat kepadatan integrasi</b> — seberapa banyak elemen rangkaian yang berhasil ditanamkan dalam satu chip.'},
+{n:'Sejarah: Jack Kilby (TI, 1958) membuat IC pertama dari germanium. Robert Noyce (Fairchild, 1959) mengembangkan versi silikon dengan interkoneksi aluminium — dasar industri IC modern. Nobel Fisika 2000 untuk Kilby.'},
+{h:'2. Tingkat Integrasi'},
+{tbl:{h:['Tingkat','Elemen per chip','Contoh'],r:[['SSI','< 100','Gerbang 7400'],['MSI','100 – 1.000','Counter 7490, decoder 7447'],['LSI','1.000 – 100.000','Memori awal, μP 8-bit'],['VLSI','100.000 – 10 juta','CPU, mikrokontroler'],['ULSI','> 10 juta','SoC, FPGA']]}},
+{h:'3. Struktur dan Fabrikasi Singkat'},
+{fl:['Wafer Si','Fotolitografi & doping','Logam interkoneksi','Pemotongan die','Bonding wire','Encapsulation','Uji fungsi']},
+{ul:['<b>Wafer</b>: lempeng silikon monokristalin hasil pemurnian electronic grade.','<b>Die/chip</b>: potongan wafer berisi rangkaian.','<b>Bonding wire</b>: kawat emas/aluminium penghubung pad die ke kaki IC.','<b>Lead frame</b>: kerangka logam tempat die diletakkan.','<b>Package</b>: pelindung mekanis dan termal.']},
+{h:'4. Kemasan (Package)'},
+{tbl:{h:['Kemasan','Ciri','Penggunaan'],r:[['DIP','2 baris kaki, mudah di soket','IC 74xx, op-amp, EPROM lama'],['SOIC','SMD, kaki menekuk','IC card modern'],['QFP','Kaki 4 sisi','Mikrokontroler, chip I/O'],['BGA','Bola solder bawah','CPU, FPGA, memori'],['TO-220','Berkaki 3 + heatsink','Regulator 7805, transistor daya'],['SIP','1 baris kaki','Driver display']]}},
+{h:'5. IC Analog dan IC Digital'},
+{tbl:{h:['Kategori','Fungsi','Contoh','Pemakaian kapal'],r:[['Linear/analog','Penguat, regulator, komparator','LM741, LM358, LM317, 555','Pengkondisi sinyal, regulator suplai'],['Digital','Logika 0/1','74LS00, CD4081, 74HC595','Gerbang logika, driver display'],['Memori','Simpan data','EPROM, EEPROM, Flash','Firmware, parameter kalibrasi'],['Mikrokontroler','CPU+memori+I/O','ATmega, PIC, STM32','Modul sensor cerdas, panel lokal'],['Konverter','ADC/DAC','ADC0804, MCP3208, DAC0832','Baca sensor analog, output 4–20 mA']]}},
+{h:'6. Fungsi Transistor di Dalam IC'},
+{ul:['<b>BJT</b> — IC bipolar (TTL, op-amp). Cepat, konsumsi daya lebih besar.','<b>MOSFET</b> — IC CMOS (CPU, memori). Konsumsi daya statis sangat rendah, kepadatan sangat tinggi.']},
+{h:'7. Membaca Kode IC'},
+{code:'74LS00N\n  74  = keluarga TTL 7400 series\n  LS  = Low-power Schottky\n  00  = 4 gerbang NAND 2-input\n  N   = kemasan DIP\n\n7805     = regulator +5 V, 1 A, TO-220\nLM358    = dual operational amplifier\nM27C1001 = EPROM 1 Mbit, akses 100 ns'},
+{n:'<b>Kebiasaan baik:</b> baca datasheet sebelum mengganti IC — cek pinout, tegangan suplai maksimum, susunan kaki. Memasang IC terbalik dapat merusak IC dan komponen di sekitarnya.'},
+{h:'8. Peran IC di Kapal'},
+{tbl:{h:['Lokasi','Fungsi IC'],r:[['Card I/O PLC','Optocoupler isolasi, driver output, ADC/DAC'],['Alarm panel','Pengkondisi sinyal, komparator limit, driver lampu'],['Generator AVR','Penguat error, pengendali eksitasi'],['Governor','Pengolah speed pickup, PID digital, driver aktuator'],['Inverter/VFD','Pembangkit PWM, driver gate IGBT, proteksi'],['HMI','Prosesor tampilan, memori grafis'],['Sensor transmitter','Penguat sinyal, linearisasi, konversi 4–20 mA']]}},
+{h:'9. Kerusakan Umum'},
+{tbl:{h:['Penyebab','Gejala','Pencegahan'],r:[['ESD','Mati total / parameter bergeser','Wrist strap, matras & kemasan antistatik'],['Overheat','Drift, mati setelah beberapa menit','Heatsink bersih, ventilasi, filter debu'],['Getaran','Kaki retak, solder pecah','Mounting karet, cek konektor'],['Kelembapan','Korosi pin, arus bocor','Conformal coating, silica gel, seal panel'],['Tegangan lebih','IC rusak langsung','Varistor, TVS, grounding, UPS'],['Ripple suplai','Reset acak, alarm palsu','Ganti kapasitor elektrolitik tua, cek regulator']]}},
+{n:'<b>Aturan keselamatan:</b> jangan menyolder di atas card saat panel bertegangan. Jangan bypass modul proteksi. Penggantian per modul sesuai prosedur pabrikan.','k':'danger'},
+{h:'10. Troubleshooting Sistematis'},
+{ol:['<b>Suplai</b>: tegangan input, fuse, CB, LED indikator.','<b>Konektor</b>: kencangkan, cek korosi, cek pin bengkok.','<b>Sinyal input</b>: ukur di terminal masuk (4–20 mA / 24 V DC).','<b>LED status</b>: RUN/FAULT/COM pada card.','<b>Output</b>: apakah perintah keluar dari card?','<b>Ganti modul</b> dengan tipe sama; catat serial, simpan modul lama.','<b>Dokumentasikan</b> dan laporkan ke Chief Engineer / ETO.']},
+{h:'11. Praktik'},
+{ul:['Identifikasi IC pada board bekas: tandai kemasan, arah pin 1, baca kode.','Cari datasheet 2 IC pilihan, tulis fungsi tiap pin.','Ukur suplai dan sinyal pada card berfungsi (izin & pengawasan).','Diskusikan prosedur anti-ESD sebelum ganti modul.']},
+{h:'12. Studi Kasus'},
+{n:'Card alarm tidak menampilkan nilai tekanan LO, sensor & kabel normal. <b>Analisis:</b> (a) cek suplai 24 V; (b) cek LED status; (c) ukur loop 4–20 mA di terminal input; (d) bila arus ada tapi tampilan nol → IC ADC/pengkondisi sinyal rusak; (e) ganti card, kalibrasi kanal; (f) catat di log.'},
+{c:'integrated circuit LSI VLSI die package LM741 7805'},
+{regs:'marine automation electronic component'}]};
+
+/* ---- MODULE 10: TTL, ECL, CMOS ---- */
+D[10]={t:'TTL, ECL, dan CMOS',g:'Lanjutan',c:[
+{p:'Setelah IC terbentuk, pertanyaannya: bagaimana IC digital "berpikir"? Modul ini membahas tiga keluarga logika utama — TTL, ECL, dan CMOS — serta bagaimana gerbang logika menjadi dasar keputusan permissive pada sistem kontrol kapal.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan pengertian digital logic dan representasi logic 0/1.','Membedakan TTL, ECL, CMOS dari teknologi, kecepatan, konsumsi daya.','Membaca tabel kebenaran gerbang logika dasar.','Menerjemahkan logika permissive sistem kapal ke persamaan logika.','Menjelaskan fungsi rangkaian logika di dalam controller.']},
+{h:'1. Digital Logic'},
+{p:'Rangkaian digital hanya mengenal dua kondisi: <b>Logic 0</b> = LOW dan <b>Logic 1</b> = HIGH. Batas tegangan tidak selalu 0 V dan 5 V — nilainya bergantung keluarga IC. Yang penting adalah <b>noise margin</b> — selisih antara batas output pengirim dan batas input penerima.'},
+{n:'<b>Analogi kapal:</b> "Tekanan oli normal" = 1, "Emergency stop aktif" = 1. Controller mengevaluasi kombinasi keduanya untuk memutuskan apakah operasi diizinkan.'},
+{h:'2. Gerbang Logika & Tabel Kebenaran'},
+{tbl:{h:['A','B','AND','OR','NAND','NOR','XOR'],r:[['0','0','0','0','1','1','0'],['0','1','0','1','1','0','1'],['1','0','0','1','1','0','1'],['1','1','1','1','0','0','0']]}},
+{p:'NOT membalik satu masukan. <b>Gerbang universal:</b> NAND dan NOR dapat dirangkai menjadi gerbang lain — inilah alasan IC 7400 (quad NAND) populer sebagai trainer.'},
+{h:'3. TTL — Transistor-Transistor Logic'},
+{p:'TTL dibangun dari transistor bipolar (BJT). Keluarga ini menjadi standar industri pada 1960–1980-an dan masih dipakai sebagai bahan pembelajaran karena mudah, murah, tangguh.'},
+{tbl:{h:['Parameter (seri 74LS, Vcc 5 V)','Nilai'],r:[['VIL (input LOW)','≤ 0,8 V'],['VIH (input HIGH)','≥ 2,0 V'],['VOL (output LOW)','≈ 0,2–0,4 V'],['VOH (output HIGH)','≈ 2,7–3,4 V'],['Fan-out','≈ 10 gerbang'],['Propagasi','≈ 10 ns'],['Daya/gerbang','≈ 2–10 mW']]}},
+{p:'Contoh: 7400 (NAND), 7402 (NOR), 7404 (NOT), 7408 (AND), 7432 (OR), 7486 (XOR). Varian: 74LS, 74HC.'},
+{n:'<b>Penting:</b> input TTL yang floating dianggap HIGH dan sangat rentan noise. Selalu pasang pull-up/pull-down resistor.','k':'warn'},
+{h:'4. ECL — Emitter-Coupled Logic'},
+{p:'ECL memakai pasangan BJT diferensial yang <b>tidak pernah masuk saturasi</b> — waktu pemulihan sangat singkat sehingga menjadi keluarga tercepat pada masanya.'},
+{tbl:{h:['Aspek','Karakteristik'],r:[['Kecepatan','Sangat tinggi (±1 ns)'],['Konsumsi daya','Tinggi (arus konstan)'],['Level logika','Umumnya negatif (−5,2 V)'],['Terminasi','Resistor 50 Ω ke −2 V'],['Aplikasi','Sistem kecepatan tinggi, osilator']]}},
+{p:'Di kapal ECL jarang dipakai untuk kontrol mesin biasa karena boros daya dan rangkaian rumit.'},
+{h:'5. CMOS'},
+{p:'CMOS memakai pasangan MOSFET N dan P yang bekerja bergantian. Ketika satu konduksi, yang lain mati — arus hanya mengalir saat switching, sehingga konsumsi daya statis sangat rendah.'},
+{tbl:{h:['Aspek','Karakteristik'],r:[['Teknologi','MOSFET N & P komplementer'],['Konsumsi daya','Sangat rendah saat statis'],['Tegangan','Lebar (3–15 V seri 4000; 2–6 V 74HC)'],['Kelemahan','Sangat rentan ESD'],['Aplikasi','CPU, memori, IC digital modern'],['Contoh','CD4081, CD4011, 74HC00']]}},
+{n:'<b>ESD:</b> sentuhan jari pada pin CMOS dapat merusak gerbang oksida (tebal hanya beberapa nanometer). Wajib gelang antistatik saat menangani card CMOS.','k':'danger'},
+{h:'6. Perbandingan TTL / ECL / CMOS'},
+{tbl:{h:['Parameter','TTL','ECL','CMOS'],r:[['Teknologi','BJT','BJT diferensial','MOSFET'],['Kecepatan','Sedang–tinggi','Sangat tinggi','Bervariasi'],['Daya statis','Sedang','Tinggi','Sangat rendah'],['Tegangan','5 V','Umumnya negatif','Lebar'],['ESD','Sedang','Sedang','Sangat tinggi'],['Aplikasi','Logika diskrit','Sistem kecepatan tinggi','CPU, memori']]}},
+{h:'7. Logika Permissive pada Sistem Kapal'},
+{code:'START = AUTO  AND  PERMISSIVE  AND  NOT TRIP\n\nAUTO       : selector pada posisi AUTO\nPERMISSIVE : tekanan suction cukup, level tangki cukup, tidak ada alarm kritis\nTRIP       : overload motor, emergency stop, atau proteksi low-low'},
+{p:'Bila salah satu syarat tidak terpenuhi, output start tidak aktif. Inilah inti <b>interlock</b> pada sistem kontrol kapal — dan semuanya dibangun dari gerbang logika.'},
+{h:'8. Hubungan dengan Kapal'},
+{ul:['Controller ME mengevaluasi banyak input digital (turning gear, start air, shutdown) sebelum start.','PLC pompa dan ballast menggunakan logika yang sama.','Generator controller mengevaluasi permissive sebelum breaker menutup.','Alarm monitoring menggunakan OR untuk mengelompokkan alarm dan AND untuk mengunci alarm hingga di-acknowledge.']},
+{h:'9. Praktik'},
+{ol:['Gunakan trainer IC 7400/7408/7432 atau simulator logika digital.','Susun tabel kebenaran dari hasil pengukuran LED output.','Buat rangkaian logika permissive pompa, uji tiap kombinasi input.','Diskusikan: apa yang terjadi bila satu input floating?']},
+{h:'10. Studi Kasus'},
+{n:'Pompa pendingin tidak start walau AUTO dan tidak ada alarm. <b>Analisis:</b> telusuri tiap input gerbang — apakah sinyal "tidak ada trip" benar-benar HIGH? Apakah input permissive terbaca? Ukur level tegangan di terminal input card. Sering masalahnya bukan di program, melainkan kontak NC kotor atau kabel longgar.'},
+{c:'TTL CMOS ECL logic families logic gates truth table animation'},
+{regs:'programmable electronic system ship'}]};
+
+/* ---- MODULE 11: EPROM, RAM, CPU ---- */
+D[11]={t:'EPROM, RAM, dan CPU',g:'Lanjutan',c:[
+{p:'Sistem kontrol kapal adalah komputer industri: harus menyimpan program, mengingat parameter, membaca sensor, dan mengambil keputusan. Modul ini membahas tiga pilar tersebut — memori non-volatil (EPROM/Flash), memori kerja (RAM), dan otak pemroses (CPU).'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan fungsi memori elektronik pada controller.','Membedakan EPROM, EEPROM, Flash, dan RAM.','Menjelaskan struktur dan tahapan kerja CPU.','Menjelaskan alur data sensor–CPU–aktuator.','Menganalisis gejala gangguan akibat kegagalan memori atau CPU.']},
+{h:'1. Hierarki Memori'},
+{tbl:{h:['Jenis','Volatil?','Kecepatan','Fungsi'],r:[['Register (di CPU)','Ya','Tertinggi','Data sedang diproses'],['Cache','Ya','Sangat tinggi','Salinan data sering dipakai'],['RAM','Ya','Tinggi','Data kerja & variabel program'],['Flash/EEPROM','Tidak','Sedang','Program (firmware), parameter'],['Storage','Tidak','Lambat','Log, trend, arsip alarm']]}},
+{h:'2. Keluarga ROM'},
+{tbl:{h:['Jenis','Menulis','Menghapus','Keterangan'],r:[['Mask ROM','Fabrikasi','Tidak bisa','Program permanen'],['PROM','Sekali (burner)','Tidak bisa','One-time programmable'],['EPROM','Programmer (Vpp)','UV (jendela kuarsa)','Bisa dipakai ulang setelah UV'],['EEPROM','Elektrik per byte','Elektrik','Bisa ditulis di rangkaian'],['Flash','Elektrik per blok','Elektrik','Standar penyimpanan modern']]}},
+{n:'<b>Catatan:</b> pada controller kapal modern, penyimpanan program umumnya memakai Flash atau media solid-state lain sesuai desain pabrikan — bukan selalu EPROM. Namun istilah "EPROM" masih sering dipakai teknisi senior sebagai sebutan umum untuk memori program.'},
+{h:'3. EPROM Detail'},
+{ul:['Sel <b>floating gate</b> MOSFET — muatan terperangkap merepresentasikan bit.','Floating gate terisolasi oleh oksida — muatan bertahan bertahun-tahun tanpa suplai.','Penghapusan: sinar UV 15–20 menit melalui jendela kuarsa.','Pemrograman ulang via <i>device programmer</i> dengan tegangan Vpp khusus.']},
+{n:'<b>Prosedur aman:</b> sebelum ganti/program ulang memori program, lakukan <b>backup</b> dan catat versi firmware. Kesalahan versi dapat membuat controller menolak beroperasi.','k':'warn'},
+{h:'4. RAM'},
+{tbl:{h:['Jenis','Struktur','Keunggulan','Kelemahan'],r:[['SRAM','6 transistor/sel (flip-flop)','Sangat cepat, tidak perlu refresh','Mahal, kepadatan rendah'],['DRAM','1 transistor + 1 kapasitor','Murah, kepadatan tinggi','Perlu refresh, lebih lambat'],['NVRAM','SRAM + battery backup','Data tetap saat listrik putus','Baterai harus dipantau']]}},
+{p:'Data di RAM: pembacaan sensor terkini, status I/O, hasil PID, variabel program, buffer komunikasi.'},
+{n:'<b>Penyebab umum masalah di kapal:</b> baterai backup RAM lemah (3 V lithium). Gejala: parameter hilang/berubah setiap kali kapal blackout. Jadwalkan penggantian baterai sesuai interval pabrikan.','k':'danger'},
+{h:'5. Kapasitas & Pengalamatan'},
+{code:'address bus 10 bit → 2^10 = 1.024 lokasi (1 K)\naddress bus 16 bit → 2^16 = 65.536 lokasi (64 K)\naddress bus 20 bit → 2^20 = 1.048.576 lokasi (1 M)'},
+{h:'6. CPU — Central Processing Unit'},
+{tbl:{h:['Bagian','Fungsi'],r:[['Control Unit','Ambil instruksi, uraikan, kendalikan urutan'],['ALU','Operasi aritmetika & logika'],['Register','Penyimpanan sementara super cepat (PC, IR, ACC)'],['Bus','Address bus, data bus, control bus'],['Clock','Sumber denyut sinkronisasi']]}},
+{h:'7. Siklus Kerja CPU'},
+{fl:['Fetch — ambil instruksi','Decode — uraikan','Execute — jalankan','Store — simpan hasil']},
+{p:'Contoh Main Engine: (1) Fetch instruksi "baca RPM dari input module"; (2) Decode sebagai pembacaan kanal analog; (3) Execute: ALU bandingkan RPM dengan setpoint; (4) Store: hasil di RAM, kirim ke output untuk governor.'},
+{h:'8. Alur Data pada Controller Kapal'},
+{fl:['Sensor','Input module','CPU + program','Output module','Aktuator','Feedback']},
+{p:'Contoh: sensor RPM → input module hitung frekuensi → CPU bandingkan setpoint → output ke governor → bahan bakar naik → RPM naik → feedback kembali.'},
+{h:'9. Mekanisme Pengaman di Controller'},
+{ul:['<b>Watchdog timer</b>: reset CPU bila program berhenti merespons.','<b>CRC/checksum</b>: verifikasi integritas program.','<b>Redundansi</b>: CPU cadangan atau I/O ganda.','<b>Fail-safe</b>: output diarahkan ke kondisi aman saat komunikasi hilang.']},
+{h:'10. Praktik'},
+{ul:['Gambar diagram blok: Sensor → Input Module → CPU → Program → Output Module → Actuator.','Jelaskan apa yang terjadi bila: CPU mati, suplai hilang, memori korup, sensor tidak terbaca, komunikasi putus.','Identifikasi lokasi baterai backup dan prosedur penggantiannya.']},
+{h:'11. Studi Kasus'},
+{n:'Controller menampilkan nilai sensor tidak wajar setelah blackout total. <b>Analisis:</b> (a) periksa battery backup RAM; (b) bandingkan parameter dengan commissioning record; (c) restore dari backup; (d) cek apakah ada lonjakan tegangan saat blackout yang merusak modul memori; (e) uji fungsi sebelum operasi.'},
+{c:'EPROM EEPROM flash memory floating gate CPU fetch decode execute animation RAM SRAM DRAM'},
+{regs:'marine control system memory backup'}]};
+
+/* ---- MODULE 12: Relay, Sequential, IACMS ---- */
+D[12]={t:'Peralatan Kontrol, Relay, Sequential, IACMS',g:'Lanjutan',c:[
+{p:'Modul ini menghubungkan "otak" elektronik dengan "otot" permesinan. Relay menjadi jembatan antara sinyal lemah controller dan beban besar di kamar mesin, kontrol sekuensial mengatur urutan langkah yang aman, dan IACMS menyatukan semuanya dalam satu layar pemantauan di ECR.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan pengertian dan contoh peralatan kontrol elektronik.','Menjelaskan konstruksi dan prinsip kerja relay elektromagnetik.','Menjelaskan konsep kontrol sekuensial beserta permissive dan interlock.','Menjelaskan fungsi, arsitektur, dan batasan IACMS.','Menelusuri hubungan sensor–controller–relay–aktuator.']},
+{h:'1. Peralatan Kontrol Elektronik'},
+{p:'Peralatan yang menerima informasi dari sensor, memproses sesuai program, lalu menghasilkan perintah ke aktuator.'},
+{tbl:{h:['Peralatan','Fungsi','Contoh di kapal'],r:[['Engine controller','Start, stop, speed, proteksi ME','Engine control system ME/RT-flex'],['Generator controller','Start, eksitasi, sinkronisasi, load sharing','Power management system'],['PLC','Logika kontrol mesin bantu','Kontrol pompa, ballast, bilge'],['Alarm panel','Kumpul & tampil alarm','Panel alarm ECR'],['Electronic governor','Atur putaran mesin','Governor diesel generator'],['Motor controller/VFD','Start & kecepatan motor','Drive pompa, winch, thruster'],['Safety system','Proteksi independen','ME safety system, boiler safeguard']]}},
+{h:'1.1 Open Loop vs Closed Loop'},
+{tbl:{h:['Aspek','Open Loop','Closed Loop'],r:[['Umpan balik','Tidak ada','Ada (feedback)'],['Ketelitian','Rendah, tergantung kalibrasi','Tinggi, koreksi otomatis'],['Contoh','Start pompa manual','Kontrol tekanan, level, RPM']]}},
+{h:'2. Relay'},
+{p:'Relay adalah sakelar yang dioperasikan secara elektromagnetik. Arus kecil pada coil mengendalikan kontak yang mampu melewatkan arus jauh lebih besar.'},
+{tbl:{h:['Bagian','Fungsi'],r:[['Coil','Membentuk medan magnet saat dialiri arus'],['Magnetic core','Memperkuat & memusatkan medan magnet'],['Armature','Bergerak saat tertarik medan magnet'],['Spring','Mengembalikan kontak ke posisi normal'],['Kontak NO','Normally Open — terbuka saat relay tidak aktif'],['Kontak NC','Normally Closed — tertutup saat relay tidak aktif'],['COM','Common — terminal bersama']]}},
+{fl:['Tegangan pada coil','Arus mengalir','Medan magnet terbentuk','Armature tertarik','Kontak NO menutup / NC membuka','Coil dilepas → pegas kembalikan kontak']},
+{tbl:{h:['Konfigurasi','Arti','Jumlah Kontak'],r:[['SPST','Single Pole Single Throw','1 kontak'],['SPDT','Single Pole Double Throw','1 COM, 1 NO, 1 NC'],['DPDT','Double Pole Double Throw','2 set SPDT']]}},
+{n:'<b>Dioda flyback:</b> coil bersifat induktif — saat arus diputus timbul lonjakan tegangan balik. Dioda flyback dipasang paralel terbalik untuk menyerap lonjakan agar transistor driver tidak rusak.'},
+{tbl:{h:['Perangkat','Prinsip','Penggunaan'],r:[['Relay kontrol','Elektromagnetik, arus kecil','Antarmuka sinyal, logika, alarm'],['Kontaktor','Elektromagnetik, arus besar + arc chamber','Starter motor, beban daya besar'],['SSR','TRIAC/SCR, tanpa bergerak','Pemanas, switching cepat'],['Reed relay','Kontak tabung kaca, medan magnet','Instrumen, sinyal rendah']]}},
+{n:'<b>Penting:</b> relay kontrol biasa bukan otomatis perangkat proteksi keselamatan. Fungsi proteksi bergantung perangkat, desain, dan sertifikasi.','k':'warn'},
+{h:'3. Fungsi Relay di Kapal'},
+{ul:['Mengendalikan rangkaian alarm (lampu, buzzer, klakson).','Menghubungkan output PLC 24 V ke starter motor.','Mengendalikan solenoid valve via antarmuka.','Memisahkan rangkaian kontrol (24 V DC) dari beban (440 V AC).','Membuat interlock antarperalatan.']},
+{h:'4. Kontrol Sekuensial'},
+{p:'Pengendalian proses berdasarkan urutan langkah dan persyaratan tertentu. Setiap langkah hanya boleh berjalan bila langkah sebelumnya selesai dan syarat (permissive) terpenuhi.'},
+{tbl:{h:['Istilah','Pengertian'],r:[['Permissive','Syarat harus terpenuhi sebelum aksi diizinkan'],['Interlock','Pengunci yang mencegah aksi berbahaya'],['Timer','Penundaan waktu antar-langkah'],['Feedback','Konfirmasi bahwa langkah benar-benar terjadi'],['First-up alarm','Alarm pertama saat gangguan — kunci diagnosis'],['Fail-to-start','Kondisi gagal start setelah waktu tertentu']]}},
+{fl:['Pilih AUTO','Cek permissive & interlock','Perintah START','Motor starter aktif','Feedback running','Monitoring tekanan','Normal? lanjut : alarm']},
+{code:'|---[ AUTO ]---[ PERMISSIVE ]---[ /TRIP ]-----------( START )---|\n|---[ START ]---[ /STOP ]--------------------------( RUN )-----|\n|---[ RUN ]---[ /FEEDBACK ]---[ TON 10s ]----------( ALARM )---|'},
+{p:'Simbol <b>[ ]</b> = kontak NO, <b>[/]</b> = kontak NC, <b>( )</b> = coil output, <b>TON</b> = timer on-delay.'},
+{h:'5. IACMS'},
+{p:'IACMS (<i>Integrated Automation Control and Monitoring System</i>) mengintegrasikan fungsi pengendalian, pemantauan, alarm, dan pertukaran informasi dari berbagai permesinan kapal ke satu pusat kendali (ECR).'},
+{fl:['Sensor & aktuator','Remote I/O','Jaringan (fieldbus/Ethernet)','Operator station ECR','Alarm, trend, event log','Extension alarm']},
+{tbl:{h:['Fungsi','Contoh'],r:[['Monitoring ME','RPM, suhu, tekanan, fuel index'],['Monitoring generator','Power management, load sharing'],['Monitoring aux','Pompa, kompresor, separator'],['Monitoring boiler','Tekanan uap, level, status burner'],['Monitoring tangki','FO, DO, LO, ballast, bilge'],['Alarm & event','Time stamp, first-up alarm'],['Remote','ECR & kabin engineer jaga']]}},
+{h:'5.1 Bagaimana IACMS Bekerja'},
+{ol:['Sensor mengirim informasi kondisi mesin.','Modul input (remote I/O) menerima & mengubah sinyal.','Controller memproses & membandingkan dengan limit.','Operator station menampilkan nilai dan status.','Alarm muncul bila kondisi memenuhi kriteria (dengan prioritas).','Operator melakukan tindakan sesuai prosedur.','Event dicatat dengan time stamp untuk evaluasi.']},
+{n:'<b>Penting:</b> IACMS tidak selalu mengendalikan seluruh peralatan kapal secara langsung. Sebagian fungsi tetap dijalankan controller lokal dan <b>sistem proteksi independen</b>. Notasi <b>UMS</b> (Unattended Machinery Space) dalam aturan class mensyaratkan sistem alarm & safety tetap bekerja tanpa operator di kamar mesin.'},
+{h:'5.2 Tingkat Alarm'},
+{tbl:{h:['Tingkat','Arti','Tindakan'],r:[['Alarm','Menyimpang, belum kritis','Catat, pantau, tindakan sesuai prosedur'],['Alarm kritis','Perlu tindakan segera','Segera tindak lanjuti, laporkan'],['Slowdown','Sistem turunkan daya/putaran otomatis','Cari penyebab, jangan paksa operasi'],['Shutdown','Sistem hentikan mesin','Analisis penyebab sebelum restart'],['Emergency shutdown','Penghentian darurat','Ikuti prosedur darurat & investigasi']]}},
+{h:'6. Studi Kasus'},
+{n:'Alarm "Main Engine LO pressure low" muncul di IACMS. <b>Yang harus dijelaskan taruna:</b><ol><li>Apa yang diukur sensor? — tekanan minyak pelumas.</li><li>Bagaimana sinyal diterima? — transmitter 4–20 mA ke remote I/O.</li><li>Bagaimana controller menentukan alarm? — bandingkan dengan batas.</li><li>Bagaimana tampil? — layar, lampu, buzzer, event log.</li><li>Tindakan operator? — verifikasi gauge lokal, cek pompa, level, filter, laporkan.</li><li>Mengapa tidak boleh diabaikan? — dapat merusak bearing/crankshaft dalam hitungan detik.</li></ol>'},
+{h:'7. Praktik'},
+{ul:['Relay trainer: ukur tahanan coil, uji kontak NO/NC, ukur waktu pick-up/drop-out.','Simulasi kontrol sekuensial pompa dengan kartu langkah.','Telusuri satu kanal alarm dari sensor sampai lampu indikator.','Diskusikan perbedaan IACMS dan safety system independen.']},
+{c:'electromagnetic relay animation sequential control ladder IACMS integrated automation control monitoring ship engine control room'},
+{regs:'unattended machinery space UMS alarm system'}]};
+
+/* ---- MODULE 13: PLC ---- */
+D[13]={t:'PLC dan Computer Programmable Control',g:'Lanjutan',c:[
+{p:'PLC adalah komputer industri yang dirancang tahan banting untuk mengendalikan mesin. Di kapal, PLC menjadi tulang punggung kontrol pompa, ballast, bilge, separator, dan banyak sistem bantu lainnya.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan pengertian dan bagian utama PLC.','Menjelaskan siklus scan dan pengaruhnya terhadap respons sistem.','Membaca dan membuat ladder logic sederhana.','Membedakan PLC, industrial computer, dan DCS.','Menerapkan urutan troubleshooting PLC secara sistematis.']},
+{h:'1. Pengertian PLC'},
+{p:'<b>PLC (Programmable Logic Controller)</b> adalah pengendali elektronik berbasis mikroprosesor yang dapat diprogram untuk menjalankan fungsi kontrol logika, sekuensial, pewaktuan, pencacahan, dan aritmetika pada proses industri. PLC lahir akhir 1960-an (Modicon, 1968) sebagai pengganti panel relay yang besar dan sulit diubah.'},
+{h:'2. Bagian Utama PLC'},
+{tbl:{h:['Komponen','Fungsi','Catatan praktis'],r:[['Power supply','Tegangan internal & I/O 24 V DC','Cek LED PWR; ukur tegangan input'],['CPU','Jalankan program, kelola memori & komunikasi','LED RUN/ERR menunjukkan status'],['Memori','Program (Flash/EEPROM) & data kerja (RAM)','Backup program wajib'],['Digital input','Baca status ON/OFF 24 V DC','Optocoupler untuk isolasi'],['Digital output','Kendalikan perangkat ON/OFF','Perhatikan rating arus'],['Analog input','Baca 4–20 mA / 0–10 V','Kalibrasi & shielding'],['Analog output','Keluarkan 4–20 mA / 0–10 V','Untuk valve, VFD, governor'],['Communication','Ethernet, Modbus, Profibus, CANopen','Untuk HMI & integrasi IACMS'],['Rack','Tempat modul & backplane','Cek konektor backplane']]}},
+{h:'3. Siklus Scan'},
+{fl:['Baca semua input','Eksekusi program baris per baris','Perbarui semua output','Diagnosa & komunikasi','Ulangi']},
+{p:'<b>Scan time</b> adalah waktu satu siklus penuh, umumnya 1–50 ms tergantung ukuran program. Untuk aplikasi yang menuntut respons sangat cepat (misal proteksi overspeed) digunakan modul khusus atau safety system terpisah.'},
+{n:'<b>Watchdog:</b> jika scan melebihi batas waktu, PLC menandai fault dan dapat menghentikan program demi keamanan.'},
+{h:'4. Input dan Output — Pompa Pendingin'},
+{tbl:{h:['Input','Output'],r:[['Selector AUTO/MANUAL','Perintah start motor'],['Tekanan discharge (AI 4–20 mA)','Perintah alarm'],['Feedback running motor','Indikasi status di HMI'],['Overload trip motor','Logika stop / interlock'],['Status emergency stop','Indikasi alarm & tindakan'],['Level tangki (AI)','Perintah buka/tutup valve']]}},
+{h:'5. Ladder Logic'},
+{tbl:{h:['Simbol','Arti'],r:[['—| |—','Kontak NO (aktif bila TRUE)'],['—|/|—','Kontak NC (aktif bila FALSE)'],['—( )—','Coil output'],['—(S)— / —(R)—','Set / Reset (latching)'],['TON / TOF','Timer on-delay / off-delay'],['CTU / CTD','Counter up / down'],['MOV, ADD, CMP','Instruksi pemindahan, aritmetika, banding']]}},
+{h:'5.1 Program Pompa Duty/Standby'},
+{code:'RUNG 1 : Start pompa utama\n|--[ AUTO ]--[ PERMISSIVE ]--[/ TRIP_P1 ]--[/ RUN_P1 ]------( START_P1 )--|\n\nRUNG 2 : Self-holding\n|--[ START_P1 ]--[/ STOP ]-----------------------------------( RUN_P1 )----|\n\nRUNG 3 : Deteksi gagal start\n|--[ START_P1 ]--[/ FEEDBACK_P1 ]--[ TON 10s ]---------------( FAIL_P1 )----|\n\nRUNG 4 : Start pompa standby bila pompa utama gagal\n|--[ FAIL_P1 ]--[ AVAILABLE_P2 ]--[/ TRIP_P2 ]----------------( START_P2 )---|\n\nRUNG 5 : Alarm\n|--[ FAIL_P1 ]--[ FAIL_P2 ]-----------------------------------( ALARM )------|'},
+{n:'<b>Logika dasar:</b> START = AUTO ∧ PERMISSIVE ∧ ¬TRIP'},
+{h:'6. PLC vs Industrial Computer vs DCS'},
+{tbl:{h:['Aspek','PLC','Industrial Computer','DCS'],r:[['Perancangan','Khusus kontrol industri','Komputer serba guna diperkuat','Kontrol terdistribusi skala besar'],['Keandalan','Sangat tinggi','Bergantung OS/hardware','Sangat tinggi, redundan'],['I/O','Modul industri khusus','Perlu kartu tambahan','I/O tersebar di lapangan'],['Pemrograman','Ladder, FBD, STL','Bahasa umum/SCADA','Function block, grafik'],['Di kapal','Kontrol mesin bantu','Monitoring, HMI','Power management, plant besar'],['Kelemahan','Fleksibilitas terbatas','Rentan OS/software','Biaya tinggi, kompleks']]}},
+{h:'7. Aplikasi PLC di Kapal'},
+{ul:['Kontrol pompa otomatis (duty/standby, changeover).','Sistem transfer bahan bakar dan settling/service tank.','Sistem bilge dan ballast (dengan oil content meter).','Monitoring dan kontrol level tangki.','Kontrol separator/purifier, provision plant, incinerator.','Interlock sistem bahan bakar dan ventilasi ruang mesin.']},
+{h:'8. Instalasi dan Perawatan'},
+{ul:['<b>Grounding</b> panel & shielding kabel analog untuk menekan noise.','<b>Segregasi kabel</b>: pisahkan sinyal dari kabel daya.','<b>Ventilasi panel</b> dan filter debu terawat.','<b>Backup program</b> dan dokumentasi versi berkala.','<b>Baterai CPU</b> diganti sesuai interval pabrikan.','<b>Label kabel</b> dan as-built drawing selalu diperbarui.']},
+{h:'9. Troubleshooting PLC Berurutan'},
+{ol:['<b>Mode</b>: apakah RUN? Selector AUTO benar?','<b>Power & fault</b>: LED PWR, RUN, ERR, BAT; ukur 24 V.','<b>Input</b>: LED input menyala saat sinyal? Ukur terminal DI/AI.','<b>Program</b>: bandingkan dengan dokumentasi; cek force/override tidak sengaja.','<b>Output</b>: LED output menyala? Ukur tegangan di terminal.','<b>Rangkaian luar</b>: relay, kontaktor, fuse, kabel ke aktuator.','<b>Feedback</b>: sensor benar-benar mengirim sinyal?','<b>Komunikasi</b>: status jaringan ke HMI/IACMS.','<b>Dokumentasikan</b> dan laporkan.']},
+{n:'<b>Peringatan:</b> instruksi <i>force</i> pada PLC sangat berbahaya bila ditinggal aktif. Selalu hapus force setelah pengujian dan catat dalam log.','k':'danger'},
+{h:'10. Praktik'},
+{ul:['Membuat program pompa duty/standby pada PLC trainer/simulator.','Menunjukkan: input status pompa utama, status pompa standby, kondisi AUTO, kondisi trip, output perintah start, feedback running.','Menguji simulasi kegagalan pompa utama dan changeover otomatis.']},
+{c:'PLC programmable logic controller hardware components scan cycle animation ladder logic pump control'},
+{regs:'automation control system ship class rules'}]};
+
+/* ---- MODULE 14: Main Engine Electronic Control ---- */
+D[14]={t:'Electronic Control pada Main Engine',g:'Lanjutan',c:[
+{p:'Modul ini adalah jantung mata kuliah: bagaimana sistem elektronik mengendalikan operasi mesin induk kapal — dari perintah di bridge sampai bahan bakar benar-benar disemprotkan ke silinder.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan sistem electronic control Main Engine secara keseluruhan.','Menjelaskan start dan stop sequence beserta permissive-nya.','Menjelaskan pengendalian RPM dan electronic governor.','Menjelaskan injection timing, autoload, dan crash astern.','Membedakan alarm, slowdown, shutdown, dan emergency shutdown.','Menjelaskan CPP dan blade angle control.']},
+{h:'1. Ruang Lingkup Sistem Elektronik ME'},
+{p:'Pada mesin diesel kapal modern, sistem elektronik dapat mengatur: fuel injection (waktu & jumlah), exhaust valve operation, engine speed & load, starting sequence, safety monitoring, alarm, slowdown, shutdown.'},
+{n:'<b>Penting:</b> tidak semua Main Engine menggunakan sistem elektronik yang sama. Mesin dengan camshaft konvensional memiliki arsitektur berbeda dari mesin <i>electronically controlled</i> seperti MAN ME/ME-C/ME-B atau Wärtsilä RT-flex.','k':'warn'},
+{h:'2. Start Sequence ME'},
+{fl:['Start command','Permissive check','Starting air control','Crankshaft rotation','Fuel injection','Running feedback']},
+{tbl:{h:['Tahap','Uraian','Yang Diperiksa'],r:[['Start command','Perintah dari telegraph/control station','Posisi telegraph, mode kontrol (bridge/ECR/local)'],['Start permissive','Controller cek persyaratan keselamatan','Starting air tersedia, turning gear disengage, interlock, tidak ada shutdown, kondisi sesuai manual'],['Starting sequence','Controller aktifkan perangkat starting','Pilot valve, starting valve, timing sesuai firing order'],['Engine rotation','Udara start dorong piston, crankshaft berputar','Konfirmasi rotasi via speed pickup'],['Fuel injection','Setelah kondisi start terpenuhi, pembakaran diizinkan','RPM minimum, rack/fuel index sesuai'],['Running feedback','Sensor putaran konfirmasi mesin berputar','RPM stabil, minyak & air normal']]}},
+{h:'3. Stop Sequence'},
+{ol:['Operator beri perintah STOP.','Controller proses perintah.','Sistem hentikan suplai bahan bakar.','Mesin kehilangan energi pembakaran.','Putaran menurun.','RPM mencapai nol.','Status STOP ditampilkan, turning gear boleh dipasang.']},
+{n:'<b>Emergency shutdown</b> berbeda dari normal stop karena dijalankan akibat kondisi berbahaya (LO pressure sangat rendah, overspeed, oil mist detection).'},
+{h:'4. Revolution / RPM Control'},
+{p:'RPM adalah jumlah putaran crankshaft per menit. Sensor putaran memberi informasi ke controller, controller mengatur perintah bahan bakar sesuai karakteristik mesin.'},
+{code:'RPM = (60 × f) / N\n\nf = pulsa per detik dari speed pickup\nN = jumlah pulsa per putaran\n\nContoh: f = 300 pulsa/s, N = 60\nRPM = (60 × 300) / 60 = 300 RPM'},
+{p:'Kontak pickup kotor atau air gap salah adalah penyebab umum pembacaan tidak stabil. Gejala: RPM berfluktuasi, alarm overspeed palsu, atau governor hunting.'},
+{h:'5. Electronic Governor'},
+{fl:['Setpoint speed','RPM sensor aktual','Controller bandingkan','Hitung koreksi PID','Aktuator ubah bahan bakar','RPM berubah','Feedback']},
+{tbl:{h:['Istilah','Pengertian'],r:[['Setpoint','Nilai RPM yang diminta'],['Error','Selisih setpoint dan aktual'],['Proportional (P)','Koreksi sebanding error'],['Integral (I)','Hilangkan offset'],['Derivative (D)','Redam perubahan cepat (anti-hunting)'],['Droop','Penurunan putaran saat beban naik — untuk load sharing'],['Isochronous','Putaran konstan tanpa droop'],['Actuator','Penggerak fuel rack/pump']]}},
+{p:'Governor dan fuel injection controller dapat berupa fungsi terpisah atau terintegrasi, tergantung desain ME.'},
+{h:'6. Injection Timing'},
+{p:'Injection timing adalah waktu terjadinya injeksi bahan bakar terhadap posisi crankshaft atau kondisi siklus. Pada mesin elektronik, controller mengatur waktu injeksi sesuai RPM, beban, posisi crankshaft, kondisi operasi, dan program karakteristik mesin.'},
+{tbl:{h:['Faktor','Pengaruh terhadap Timing'],r:[['RPM','Dimajukan pada putaran tinggi'],['Beban','Disesuaikan untuk efisiensi dan suhu puncak'],['Posisi crankshaft','Diperoleh dari encoder crank angle'],['Kondisi operasi','Kompensasi suhu, scavenge, kualitas BBM'],['Karakteristik mesin','Program pabrikan (performance map)']]}},
+{p:'Pengaturan tepat memengaruhi pembakaran, efisiensi bahan bakar, temperatur gas buang, emisi (MARPOL Annex VI), dan performa mesin.'},
+{h:'7. Autoload'},
+{p:'Pengaturan kenaikan/penurunan beban otomatis mengikuti batas dan karakteristik yang ditentukan. Ketika beban propeller meningkat, controller menaikkan bahan bakar secara terkendali agar mesin tidak overload.'},
+{tbl:{h:['Fungsi','Peran'],r:[['RPM sensing','Deteksi perubahan putaran akibat beban'],['Load calculation','Hitung beban aktual mesin'],['Fuel limitation','Batasi fuel index maksimum'],['Torque limitation','Batasi torsi maksimum'],['Scavenge air limiter','Batasi BBM sesuai udara scavenge'],['Controller & aktuator','Jalankan koreksi']]}},
+{h:'8. Crash Astern'},
+{p:'Manuver untuk menghentikan atau mengurangi gerakan maju kapal dengan perintah mundur sesuai prosedur dan batas kemampuan kapal.'},
+{fl:['Perintah astern','Cek kondisi mesin','Hentikan/kurangi putaran ahead','Reversing','Kontrol start & bahan bakar','Monitoring RPM']},
+{n:'<b>Penting:</b> crash astern bukan sekadar membalik sakelar arah putaran. Sistem harus mempertimbangkan kecepatan mesin, arah putaran, starting air, interlock, dan batas mekanis. Kesalahan urutan dapat merusak starting valve, camshaft, atau sistem reversing.','k':'danger'},
+{h:'9. Slowdown dan Shutdown'},
+{tbl:{h:['Fungsi','Pengertian','Contoh Pemicu'],r:[['Alarm','Kondisi abnormal','LO pressure rendah (batas alarm), suhu jacket water tinggi'],['Slowdown','Kurangi daya/kecepatan otomatis','LO pressure di bawah batas slowdown, suhu exhaust tinggi'],['Shutdown','Hentikan mesin otomatis','LO pressure sangat rendah, overspeed'],['Emergency shutdown','Penghentian darurat','Oil mist detector aktif, overspeed ekstrem']]}},
+{p:'Setiap batas alarm dan tindakan proteksi mengikuti manual pabrikan dan sistem keselamatan kapal. Override hanya sesuai prosedur dengan otorisasi berwenang.'},
+{h:'10. CPP — Controllable Pitch Propeller'},
+{p:'CPP memungkinkan sudut bilah propeller diubah untuk mengendalikan thrust tanpa harus selalu mengubah arah putaran mesin penggerak.'},
+{fl:['Pitch command','CPP controller','Hydraulic valve & aktuator','Hub & blade movement','Pitch feedback','Controller koreksi']},
+{tbl:{h:['Komponen','Fungsi'],r:[['CPP controller','Bandingkan pitch command dan pitch aktual'],['Pitch feedback','Kirim posisi blade aktual'],['Hydraulic pump','Sumber tenaga hidrolik'],['Hydraulic valve','Atur arah & laju oli'],['Hub mechanism','Teruskan gerakan ke blade'],['OD box','Distribusi oli ke hub berputar'],['Position sensor','Deteksi sudut blade'],['Load control','Batasi pitch agar mesin tidak overload']]}},
+{p:'Ketika pitch diperbesar, beban propeller meningkat. Controller harus menjaga mesin tidak overload dengan mengoordinasikan pitch, RPM, dan batas beban (combinator curve).'},
+{n:'<b>Bahaya operasional:</b> pitch besar pada RPM rendah dapat menyebabkan overtorque. Kegagalan pitch feedback harus menempatkan sistem pada kondisi aman sesuai desain.','k':'warn'},
+{h:'11. Praktik'},
+{ol:['Diagram alur: Start ME → Running → Speed control → Load control → Normal stop → Emergency slowdown/shutdown → CPP pitch control.','Studi kasus: ME menerima START tapi tidak berputar. Analisis: starting air, turning gear, start permissive, starting valve, starting control, interlock, RPM feedback.','Simulasi crash astern dan diskusi kondisi pembatal perintah.']},
+{h:'12. Studi Kasus Tambahan'},
+{n:'<b>Kasus A — Automatic slowdown:</b> baca alarm di safety system & IACMS, identifikasi sensor, bandingkan nilai aktual dengan batas pada manual, jelaskan hubungan sensor–controller–aktuator, usulkan pemeriksaan aman.<br><br><b>Kasus B — Governor hunting:</b> periksa kebersihan & celah speed pickup, konektor, parameter PID, aktuator fuel rack, dan kondisi beban.<br><br><b>Kasus C — CPP tidak merespons pitch command:</b> periksa pitch feedback, tekanan hidrolik, katup proporsional, dan modul kontrol.'},
+{c:'MAN B&W ME-C electronic engine control main engine starting air sequence animation electronic governor Woodward CPP hydraulic system crash astern'},
+{regs:'main engine safety system slowdown shutdown'}]};
+
+/* ---- MODULE 15: Boiler & Auxiliary ---- */
+D[15]={t:'Boiler dan Auxiliary Machinery Automatic Control',g:'Lanjutan',c:[
+{p:'Boiler dan mesin bantu adalah "jantung kedua" kamar mesin. Modul ini membahas bagaimana sensor dan controller menjaga pembakaran, level air, temperatur uap, dan proses pemisahan bahan bakar tetap aman dan efisien.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan Automatic Combustion Control (ACC).','Menjelaskan burner control dan urutan burner.','Menjelaskan Feed Water Control (FWC).','Menjelaskan Steam Temperature Control (STC).','Menjelaskan automatic purifier control.','Mengidentifikasi sensor temperatur, level, tekanan.','Menjelaskan hubungan controller dengan aktuator.']},
+{h:'1. Automatic Combustion Control (ACC)'},
+{p:'ACC mengendalikan proses pembakaran boiler agar tekanan/keluaran uap sesuai kebutuhan, dengan mengendalikan suplai bahan bakar dan udara secara proporsional serta menjaga kondisi pembakaran aman.'},
+{tbl:{h:['Komponen','Fungsi'],r:[['Steam pressure transmitter','Ukur tekanan uap (variabel utama)'],['Fuel control valve','Atur suplai bahan bakar'],['Air flow / damper','Atur udara pembakaran'],['Burner controller','Jalankan logika pembakaran'],['O₂ sensor (bila ada)','Umpan balik efisiensi']]}},
+{fl:['Baca tekanan steam','Controller bandingkan setpoint','Hitung kebutuhan pembakaran','Perintah ke bahan bakar & udara','Burner menyesuaikan','Feedback ke controller']},
+{n:'<b>Cross-limiting:</b> kenaikan udara mendahului kenaikan bahan bakar, dan penurunan bahan bakar mendahului penurunan udara — mencegah campuran kaya dan asap hitam.'},
+{h:'2. Burner Control'},
+{tbl:{h:['Komponen','Fungsi'],r:[['Ignition transformer','Naikkan tegangan untuk percikan'],['Ignition electrode','Tempat percikan api'],['Fuel solenoid valve','Buka/tutup suplai bahan bakar'],['Fuel pump','Suplai bahan bakar dengan tekanan'],['Flame detector (UV/IR)','Deteksi keberadaan api'],['Air damper','Atur udara pembakaran'],['Burner controller','Jalankan urutan & proteksi']]}},
+{fl:['Cek permissive','Cek udara','Pre-purge','Ignition','Buka bahan bakar','Flame detection','Pembakaran stabil','Monitoring']},
+{n:'<b>Flame failure:</b> bila api gagal terbentuk atau hilang, sistem jalankan <b>fuel cut-off</b> dan <b>lockout</b> sesuai burner management design. Purge wajib sebelum ignition berikutnya. Jangan pernah bypass flame detector.','k':'danger'},
+{h:'3. Feed Water Control (FWC)'},
+{p:'FWC mengendalikan suplai air ke boiler untuk mempertahankan level air — menghindari level terlalu rendah (risiko overheat & kerusakan tube) serta level terlalu tinggi (risiko carry-over).'},
+{tbl:{h:['Komponen','Fungsi'],r:[['Level transmitter','Ukur level air drum'],['Feed water controller','Bandingkan level dengan setpoint'],['Feed water control valve','Atur debit air masuk'],['Feed water pump','Sumber aliran air'],['Alarm & proteksi','Low / high / low-low level']]}},
+{fl:['Level transmitter ukur','Sinyal ke controller','Bandingkan setpoint','Perintah ke control valve','Debit disesuaikan','Level dipantau']},
+{tbl:{h:['Mode','Sinyal','Keterangan'],r:[['Single-element','Level drum','Sederhana, boiler kecil'],['Two-element','Level + steam flow','Kurangi efek swell/shrink'],['Three-element','Level + steam + feed flow','Paling stabil untuk boiler besar']]}},
+{n:'<b>Swell & shrink:</b> saat beban uap naik mendadak, level terlihat naik (swell) karena gelembung uap bertambah; saat beban turun, level terlihat turun (shrink). Controller dua/three-element mengompensasi ini.'},
+{h:'4. Steam Temperature Control (STC)'},
+{p:'STC mengatur temperatur uap sesuai kebutuhan desain, menggunakan sensor temperatur, temperature controller, dan control valve — atau attemperator/desuperheater pada sistem yang memilikinya.'},
+{fl:['Sensor baca temperatur uap','Controller bandingkan setpoint','Perintah koreksi','Perangkat pengendali ubah proses','Temperatur dipantau']},
+{n:'Tidak semua auxiliary boiler kapal menggunakan STC kompleks — tergantung tipe boiler dan proses pemanfaatan steam.'},
+{h:'5. Automatic Purifier Control'},
+{p:'Purifier memisahkan cairan berdasarkan perbedaan densitas dengan gaya sentrifugal. Sistem kontrol otomatis mengatur starting sequence, temperatur operasi, feed supply, bowl speed, discharge sequence, water interface, alarm, dan shutdown.'},
+{fl:['Cek permissive','Start motor','Bowl speed tercapai','Feed dipanaskan','Bahan bakar masuk','Pemisahan','Discharge sludge','Alarm bila abnormal']},
+{tbl:{h:['Parameter','Sensor'],r:[['Temperatur feed','Temperature sensor/PT100'],['Kecepatan bowl','Speed sensor'],['Tekanan feed','Pressure transmitter'],['Interface air','Water transducer'],['Getaran (beberapa desain)','Vibration sensor']]}},
+{h:'6. Sensor pada Mesin Bantu'},
+{tbl:{h:['Peralatan','Sensor','Fungsi'],r:[['Boiler','Temperature sensor','Temperatur uap/gas buang/air'],['Boiler','Level transmitter','Level air drum'],['Boiler','Pressure transmitter','Tekanan steam'],['Purifier','Temperature sensor','Temperatur feed'],['Purifier','Speed sensor','Kecepatan bowl'],['Fuel system','Pressure transmitter','Tekanan BBM'],['Tank','Level transmitter','Isi tangki'],['Cooling','Temp & pressure','Jacket & sea water']]}},
+{n:'<b>Mengapa 4–20 mA?</b> Sinyal arus tahan noise dan penurunan tegangan. Arus 4 mA = nilai nol (live zero) sehingga kabel putus (0 mA) bisa dibedakan. 20 mA = skala penuh.'},
+{h:'7. Praktik'},
+{ul:['Membuat diagram blok: burner control, FWC, STC, purifier automatic control.','Menjelaskan fungsi sensor, controller, output, aktuator.','Praktik loop calibrator: injeksi 4/12/20 mA, baca di layar controller.']},
+{h:'8. Studi Kasus'},
+{n:'Boiler alarm low water level.<ol><li>Level benar-benar rendah? — cek gelas duga (gauge glass).</li><li>Transmitter benar? — bandingkan dengan gelas duga, cek kalibrasi.</li><li>Controller terima sinyal? — ukur arus loop di terminal input.</li><li>Feed water pump tersedia? — cek status, daya, alarm.</li><li>Control valve bekerja? — cek aktuator, posisi, sinyal 4–20 mA.</li><li>Proteksi jalan? — bila low-low tercapai, burner harus trip.</li></ol>'},
+{c:'boiler automatic combustion control fuel air ratio marine boiler burner sequence flame failure boiler feed water control three element purifier automatic control Alfa Laval'},
+{regs:'boiler safety low water level trip'}]};
+
+/* ---- MODULE 16: Flowchart ---- */
+D[16]={t:'Flowchart dan Simbol Sistem Kontrol',g:'Lanjutan',c:[
+{p:'Flowchart adalah bahasa universal teknisi. Sebelum membongkar panel, seorang perwira mesin harus bisa membaca alur logika sistem — dari mana informasi datang, keputusan apa yang dibuat, perintah apa yang keluar.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan pengertian dan kegunaan diagram alir.','Mengenali dan menggunakan simbol flowchart standar.','Membaca urutan proses dan keputusan.','Memahami hubungan antarperalatan dalam sistem.','Menggambar flowchart kontrol sederhana.']},
+{h:'1. Pengertian'},
+{p:'Flowchart atau diagram alir adalah gambar yang menjelaskan urutan proses, keputusan, dan hubungan antarbagian dalam suatu sistem. Digunakan untuk menjelaskan urutan start mesin, urutan kerja pompa otomatis, sistem alarm, kontrol generator, kontrol boiler, serta proses interlock dan shutdown.'},
+{h:'2. Simbol Flowchart'},
+{tbl:{h:['Simbol','Nama','Fungsi'],r:[['Oval','Terminal','Awal atau akhir proses'],['Persegi panjang','Process','Kegiatan/proses yang dilakukan'],['Belah ketupat','Decision','Keputusan YA/TIDAK'],['Jajar genjang','Input/Output','Informasi masuk atau keluar'],['Panah','Flowline','Arah alur proses'],['Lingkaran kecil','Connector','Hubungkan alur ke bagian lain'],['Dokumen','Document','Data tercetak/laporan'],['Silinder','Database','Penyimpanan data']]}},
+{h:'3. Contoh Flowchart Kontrol Pompa'},
+{fl:['START','AUTO mode?','Permissive?','Perintah START','Motor starter aktif','Feedback running?','Monitoring tekanan','Normal?','END']},
+{code:'START\n  │\n  ├─ AUTO mode dipilih? ──TIDAK──► Alarm / tunggu kondisi aman\n  │            │YA\n  ├─ Permissive terpenuhi? ──TIDAK──► Alarm / tunggu kondisi aman\n  │            │YA\n  ├─ Perintah START ──► Motor starter aktif\n  │\n  ├─ Feedback running? ──TIDAK──► Start failure alarm\n  │            │YA\n  ├─ Monitoring tekanan\n  │\n  └─ Tekanan normal? ──TIDAK──► Alarm & tindakan sesuai desain\n               │YA\n             END / evaluasi'},
+{h:'4. Perbedaan Flowchart dan Wiring Diagram'},
+{tbl:{h:['Flowchart','Wiring Diagram'],r:[['Menunjukkan urutan logika','Menunjukkan hubungan kabel'],['Menjelaskan keputusan','Menjelaskan terminal'],['Memudahkan memahami proses','Memudahkan pemeriksaan sambungan'],['Tidak menunjukkan detail kelistrikan','Menunjukkan koneksi rangkaian']]}},
+{p:'Taruna harus dapat membaca keduanya. Saat troubleshooting, flowchart menunjukkan <b>langkah mana yang gagal</b>, lalu wiring diagram menunjukkan <b>terminal mana yang harus diukur</b>.'},
+{h:'5. Jenis Diagram Lain'},
+{tbl:{h:['Jenis','Isi','Kegunaan'],r:[['P&ID','Peralatan proses, pipa, instrumen, tag number','Pahami sistem proses keseluruhan'],['Wiring diagram','Koneksi kabel & terminal','Pemeriksaan & perbaikan'],['Block diagram','Blok fungsi utama','Alur sinyal makro'],['Ladder diagram','Logika program PLC','Baca program kontrol'],['Loop diagram','Satu loop sensor→aktuator','Kalibrasi & troubleshooting loop'],['Function description','Penjelasan urutan fungsi pabrikan','Acuan utama troubleshooting']]}},
+{h:'6. Praktik'},
+{ol:['Buat flowchart: start pompa, start generator, alarm temperatur tinggi, boiler burner sequence, ME start permissive.','Tukar flowchart antar kelompok untuk uji logika.','Ubah SOP tertulis menjadi flowchart, verifikasi dengan function description pabrikan.']},
+{c:'flowchart symbols meaning P&ID diagram symbols marine pump control flowchart'},
+{regs:'marine diagram symbols standard'}]};
+
+/* ---- MODULE 17: Integration ---- */
+D[17]={t:'Flowchart Sistem Kontrol ME, Generator, dan Mesin Lain',g:'Integrasi',c:[
+{p:'Ini adalah modul integrasi. Semua materi sebelumnya — logika, memori, PLC, relay, sensor, aktuator — dipakai bersama untuk membaca sistem kontrol kapal secara menyeluruh.'},
+{h:'🎯 Capaian Pembelajaran'},
+{cap:['Menjelaskan flowchart sistem kontrol Main Engine.','Menjelaskan flowchart sistem generator.','Menjelaskan flowchart boiler dan pompa bantu.','Mengidentifikasi komponen utama pada setiap diagram.','Menjelaskan fungsi sensor, controller, output, aktuator.','Menganalisis kemungkinan gangguan pada sistem.']},
+{h:'1. Contoh 1 — Main Engine Automatic Start'},
+{fl:['Start command','Engine controller','Start permissive?','Starting air','Crankshaft berputar','RPM kondisi start?','Fuel injection','Engine running','Monitoring']},
+{tbl:{h:['Komponen','Fungsi'],r:[['Operator control','Berikan perintah'],['Engine controller','Proses perintah & permissive'],['Starting air','Tenaga awal putaran'],['RPM sensor','Ukur putaran'],['Fuel control','Kendalikan bahan bakar'],['Temperature sensor','Monitoring temperatur'],['Pressure transmitter','Monitoring tekanan'],['Alarm system','Peringatan']]}},
+{n:'Diagram tersebut merupakan contoh prinsip kerja. Urutan aktual harus mengikuti manual mesin.'},
+{h:'2. Contoh 2 — Generator Automatic Start & Synchronizing'},
+{tbl:{h:['Kelompok Mesin Diesel','Kelompok Generator Listrik'],r:[['Starting system','AVR (Automatic Voltage Regulator)'],['Governor','Voltage sensing'],['RPM sensing','Frequency sensing'],['Lube oil pressure','Current transformer'],['Cooling water temp','Synchronizing system'],['—','Circuit breaker (ACB)']]}},
+{fl:['Auto start demand','Generator controller','Start permissive?','Diesel starting','Engine running','V & f dalam batas?','Sync required?','Cek V, f, urutan fasa, sudut','Breaker close','Load sharing','Generator operation']},
+{n:'<b>Syarat synchronizing:</b> tegangan sama, frekuensi sama, urutan fasa sama, sudut fasa mendekati nol. Menutup breaker saat sudut fasa besar dapat menyebabkan arus kejut besar dan kerusakan mekanis pada kopling serta generator.','k':'warn'},
+{p:'Governor mengendalikan kecepatan/frekuensi sesuai mode operasi. AVR mengendalikan eksitasi/tegangan. Load sharing bergantung pada sistem pembagian beban aktif (kW) dan reaktif (kVAr).'},
+{h:'3. Contoh 3 — Boiler Automatic Control'},
+{fl:['Boiler controller','Permissive?','Pre-purge','Ignition','Fuel admission','Flame detected?','Stable','Monitor steam & level','Abnormal?','Alarm/protective']},
+{n:'<b>Flame failure:</b> bila api tidak terdeteksi, fuel shutoff dan lockout. Purge wajib sebelum restart. Sistem proteksi tidak boleh di-bypass.','k':'danger'},
+{h:'4. Contoh 4 — Auxiliary Pump Automatic Control'},
+{fl:['Auto mode','Monitor tekanan','Tekanan di bawah setpoint?','Main pump available?','Start main pump','Standby available?','Start standby','Verifikasi feedback','Running & tekanan pulih?','Failure alarm']},
+{tbl:{h:['Kondisi','Tindakan Sistem'],r:[['Tekanan normal','Standby siaga'],['Tekanan turun, pompa utama OK','Pompa utama start'],['Tekanan turun, pompa utama gagal','Standby start otomatis'],['Kedua pompa gagal','Alarm & intervensi operator'],['Feedback tidak diterima','Alarm fail-to-start']]}},
+{h:'5. Tujuh Kelompok Komponen pada Diagram'},
+{tbl:{h:['No','Kelompok','Fungsi'],r:[['1','Power supply','Berikan energi'],['2','Sensor','Baca kondisi mesin'],['3','Transmitter','Kirim informasi terukur'],['4','Controller','Proses informasi'],['5','Output module','Kirim perintah'],['6','Actuator','Laksanakan perintah'],['7','Feedback','Konfirmasi respons sistem']]}},
+{n:'<b>Metode half-split:</b> saat troubleshooting, periksa di tengah rantai (misalnya di input module). Jika sinyal ada di input tapi tidak ada output → masalah di controller/program. Jika sinyal tidak ada di input → masalah di sensor/kabel.'},
+{h:'6. Studi Kasus Integrasi'},
+{n:'<b>Kasus A — Generator gagal synchronizing:</b> periksa tegangan generator, frekuensi, urutan fasa, sudut fasa, sinyal pengukuran, synchronizer, breaker control, interlock.<br><br><b>Kasus B — ME automatic slowdown:</b> baca alarm, identifikasi sensor, periksa nilai aktual, bandingkan dengan batas manual, jelaskan hubungan sensor–controller, usulkan pemeriksaan aman.<br><br><b>Kasus C — Boiler flame failure:</b> periksa flame detector, urutan ignition, permissive, fuel & air supply, jelaskan fungsi flame safeguard.<br><br><b>Kasus D — CPP tidak merespons pitch command:</b> periksa pitch feedback, tekanan hidrolik, katup proporsional, load limitation.'},
+{h:'7. Tugas Akhir Sebelum UAS'},
+{p:'Setiap kelompok membuat satu proyek diagram sistem kontrol:'},
+{ul:['Kelompok 1: Main Engine','Kelompok 2: Generator','Kelompok 3: Boiler','Kelompok 4: Purifier','Kelompok 5: Cooling Water Pump']},
+{p:'Produk yang dikumpulkan:'},
+{ol:['Diagram alir.','Identifikasi sensor.','Identifikasi controller.','Identifikasi output & aktuator.','Urutan operasi.','Tiga skenario troubleshooting.','Presentasi hasil analisis.']},
+{n:'<b>Kesimpulan Modul 17:</b> Taruna harus mampu membaca dan menjelaskan sistem kontrol secara utuh — bukan hanya menghafal nama komponen elektronik.'},
+{c:'main engine automatic start flowchart generator synchronizing load sharing boiler flame safeguard duty standby pump changeover'},
+{regs:'integrated automation system ship class rules'}]};
+
+/* ---- MODULE 18: UAS ---- */
+D[18]={t:'Ujian Akhir Semester',g:'Evaluasi',c:[
+{h:'Materi yang Diujikan'},
+{ol:['TTL, ECL, dan CMOS.','EPROM, RAM, dan CPU.','Relay dan kontrol sekuensial.','IACMS.','PLC dan computer programmable control.','Main Engine electronic control.','Boiler dan auxiliary machinery control.','Flowchart dan simbol diagram alir.','Integrasi sistem kontrol kapal.']},
+{h:'Bobot Penilaian'},
+{tbl:{h:['Komponen','Bobot'],r:[['Teori & pilihan ganda','35%'],['Analisis diagram & studi kasus','35%'],['Presentasi/praktik/simulasi','30%'],['Total','100%']]}},
+{h:'Contoh Soal Teori'},
+{ol:['Jelaskan perbedaan TTL, ECL, dan CMOS.','Apa fungsi EPROM dan RAM?','Jelaskan tahapan kerja CPU.','Bagaimana relay elektromagnetik bekerja?','Apa yang dimaksud dengan kontrol sekuensial?','Jelaskan fungsi IACMS pada kapal.','Apa perbedaan PLC dan industrial computer?','Jelaskan fungsi electronic governor pada Main Engine.','Apa hubungan RPM sensor dengan pengendalian putaran ME?','Jelaskan fungsi ACC, FWC, dan STC pada boiler.']},
+{h:'Contoh Soal Analisis'},
+{ol:['<b>Main Engine:</b> ME tidak dapat start. Jelaskan minimal lima kondisi yang harus diperiksa dari sisi electronic control system.','<b>Generator:</b> Generator running tapi tidak bisa masuk busbar paralel. Jelaskan parameter yang diperiksa sebelum synchronizing.','<b>Boiler:</b> Boiler mengalami flame failure. Jelaskan fungsi flame detector, burner controller, fuel valve, ignition system.','<b>PLC:</b> Pompa pendingin tidak bekerja otomatis walau AUTO dipilih. Jelaskan urutan pemeriksaan input, program, output, feedback.','<b>Flowchart:</b> Buat diagram alir pompa duty/standby lengkap dengan permissive, interlock, alarm.']},
+{h:'Rubrik Penilaian Analisis'},
+{tbl:{h:['Kriteria','Indikator'],r:[['Pemahaman teori','Konsep benar'],['Identifikasi komponen','Fungsi setiap komponen tepat'],['Analisis sistem','Urutan kerja logis'],['Troubleshooting','Pemeriksaan berdasarkan bukti'],['Keselamatan','Perhatikan SOP & proteksi'],['Komunikasi','Mampu menjelaskan hasil analisis']]}},
+{c:'shipboard electronical system exam automation control'}]};
+
+/* ---- TOT 6.09 ---- */
+D['tot']={t:'TOT 6.09 — Metode Pembelajaran',g:'Pedagogi',c:[
+{h:'Tiga Pendekatan'},
+{ul:['<b>Pedagogi</b>: dosen menjelaskan teori dan demonstrasi.','<b>Andragogi</b>: taruna menganalisis kasus nyata permesinan kapal.','<b>Heutagogi</b>: taruna mencari manual, datasheet, dan solusi mandiri.']},
+{h:'Enam Langkah Tiap Pertemuan'},
+{ol:['<b>Materi</b>: dosen menjelaskan teori, prinsip kerja, komponen, fungsi sistem.','<b>Visualisasi</b>: foto komponen, wiring diagram, flowchart, sistem kapal.','<b>Demonstrasi</b>: penggunaan alat ukur, simulator, trainer.','<b>Analisis troubleshooting</b>: kasus gangguan ME, generator, boiler, mesin bantu.','<b>Kesimpulan & solusi</b>: taruna jelaskan hasil analisis, penyebab, rekomendasi.','<b>Evaluasi</b>: pertanyaan, tugas, umpan balik.']},
+{h:'Pembagian Waktu 3 × 60 Menit'},
+{tbl:{h:['Kegiatan','Waktu'],r:[['Pembukaan & apersepsi','10 menit'],['Penyampaian materi','40 menit'],['Demonstrasi & visualisasi','30 menit'],['Analisis kasus kelompok','45 menit'],['Presentasi & diskusi','25 menit'],['Kesimpulan & evaluasi','20 menit'],['Penutup','10 menit'],['Total','180 menit']]}},
+{h:'Standar Alat Bantu'},
+{ul:['Selaras dengan tujuan.','Akurat secara teknis.','Mutakhir.','Sesuai kemampuan peserta.','Jelas dan mudah dibaca.','Aman digunakan.','Realistis dengan kondisi kapal.','Praktis untuk kegiatan belajar.']},
+{h:'Contoh Alat'},
+{p:'Multimeter · Oscilloscope · Insulation resistance tester · Loop calibrator · PLC trainer · Trainer relay · Sensor temperatur dan tekanan · Simulator Main Engine dan generator.'},
+{c:'TOT 6.09 maritime training methodology pedagogy andragogy heutagogy'}]};
+
+/* ---- References ---- */
+D['ref']={t:'Acuan Kompetensi & Regulasi',g:'Referensi',c:[
+{h:'Acuan Utama'},
+{tbl:{h:['Dokumen','Keterkaitan'],r:[['IMO Model Course 7.04','Kompetensi Table A-III/1 tingkat operasional'],['IMO Model Course 7.02','Kompetensi tingkat manajemen Table A-III/2'],['STCW Code Table A-III/1','Acuan kompetensi perwira jaga mesin'],['STCW Code Table A-III/2','Pengayaan tingkat manajemen'],['IMO Model Course 7.08','Pengayaan bidang perwira elektro (tidak otomatis menjadi kewajiban Teknika)'],['STCW Table A-III/6','Pengayaan ETO']]}},
+{h:'Pemetaan Modul → Kompetensi'},
+{tbl:{h:['Materi','Keterkaitan Kompetensi'],r:[['Modul 1–8','Fondasi pengetahuan elektronika'],['Modul 10–11','Prinsip rangkaian elektronik & pemrosesan'],['Modul 12–13','Pengoperasian sistem kontrol elektronik'],['Modul 14','Kontrol permesinan & monitoring'],['Modul 15','Kontrol boiler & mesin bantu'],['Modul 16–17','Interpretasi diagram & integrasi sistem'],['Modul 18','Evaluasi pengetahuan & penerapan kompetensi']]}},
+{h:'Klasifikasi & Regulasi'},
+{ul:['<b>IACS</b>: UR M43 (UMS), E22, E10 — keseragaman persyaratan class.','<b>BKI</b>: Rules for Machinery Installations, Rules for Automation.','<b>SOLAS</b>: Chapter II-1 (machinery & electrical installations).','<b>MARPOL</b>: Annex VI (emisi mesin, SOx/NOx/PM).','<b>IEC 60092</b>: Electrical installations in ships.','<b>IEC 61131-3</b>: Bahasa pemrograman PLC.']},
+{n:'Pemetaan pembelajaran mengacu pada kerangka kompetensi IMO/STCW — bukan salinan resmi kurikulum IMO dan bukan pengganti RPS institusi. Nilai batas alarm, slowdown, shutdown aktual selalu mengikuti manual pabrikan dan ketentuan class.'},
+{c:'IMO STCW IACS BKI SOLAS MARPOL IEC 60092 ship machinery automation'}]};
+
+/* ---- LEARNING OUTCOMES ---- */
+D['lo']={t:'Target Hasil Belajar Taruna',g:'Outcome',c:[
+{h:'Learning Outcomes — Shipboard Electronical System'},
+{cap:['Menjelaskan prinsip elektronika dan semikonduktor.','Mengidentifikasi IC, CPU, memori, relay, PLC.','Menjelaskan prinsip kontrol elektronik dan kontrol sekuensial.','Memahami IACMS dan sistem monitoring kapal.','Menjelaskan electronic control Main Engine.','Memahami kontrol generator, boiler, auxiliary machinery.','Membaca diagram alir sistem otomatis.','Menganalisis gangguan berdasarkan gejala, data, dokumentasi.','Menerapkan prinsip keselamatan dalam pemeriksaan peralatan elektronik.']},
+{h:'Kompetensi Akhir'},
+{p:'Mampu memahami, menjelaskan, dan menganalisis sistem elektronika serta kontrol otomatis permesinan kapal pada tingkat pembelajaran operasional.'},
+{h:'Benang Merah Perkuliahan'},
+{fl:['Atom & elektron','Semiconductor','IC, memory, CPU & PLC','Sensor, signal, controller','Actuator & automation','ME · Gen · Boiler · Aux','Troubleshooting & system analysis']},
+{h:'Pesan Utama untuk Taruna'},
+{n:'"Seorang calon perwira mesin tidak cukup hanya mengetahui bahwa sebuah sensor mengukur temperatur atau sebuah PLC mengendalikan pompa. Ia harus memahami dari mana informasi berasal, bagaimana informasi diproses, bagaimana perintah diberikan, bagaimana mesin merespons, dan bagaimana melakukan pemeriksaan apabila sistem tidak bekerja sebagaimana mestinya."'},
+{c:'shipboard electronical system learning outcome'}]};
+
+/* ==== RENDER ==== */
+function renderBlock(item){
+  if(item.p) return '<p>'+item.p+'</p>';
+  if(item.h) return '<h4>'+item.h+'</h4>';
+  if(item.ul) return '<ul>'+item.ul.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  if(item.ol) return '<ol>'+item.ol.map(x=>'<li>'+x+'</li>').join('')+'</ol>';
+  if(item.cap) return '<ul class="cap">'+item.cap.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  if(item.tbl) return tbl(item.tbl.h,item.tbl.r);
+  if(item.fl) return flow(item.fl);
+  if(item.n) return '<div class="note'+(item.k?' '+item.k:'')+'">'+item.n+'</div>';
+  if(item.code) return '<div class="code">'+item.code+'</div>';
+  if(item.c) return chips(item.c)+regs(item.c);
+  if(item.regs) return regs(item.regs);
+  return '';
+}
+
+function renderMod(key){
+  const m=D[key];
+  if(!m) return '<p>Modul tidak ditemukan.</p>';
+  return m.c.map(renderBlock).join('');
+}
+
+/* ==== MODAL ==== */
+const ov=document.getElementById('ov'),mdTtl=document.getElementById('mdTtl'),mdBdg=document.getElementById('mdBdg'),mdBody=document.getElementById('mdBody');
+function openMod(key){
+  const m=D[key];
+  if(!m) return;
+  const label=typeof key==='number'?('MODUL '+key):(key==='tot'?'TOT 6.09':key==='ref'?'REFERENSI':'OUTCOME');
+  mdBdg.textContent=label+' · '+(m.g||'');
+  mdTtl.textContent=m.t;
+  mdBody.innerHTML=renderMod(key);
+  ov.classList.add('show');
+  document.body.style.overflow='hidden';
+  ov.scrollTop=0;
+}
+function closeMod(){ov.classList.remove('show');document.body.style.overflow='';}
+document.getElementById('mdCl').addEventListener('click',closeMod);
+ov.addEventListener('click',e=>{if(e.target===ov)closeMod();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMod();});
+
+/* ==== NAV & CARDS ==== */
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+document.querySelectorAll('[onclick^="goTo"]').forEach(b=>{});
+
+function makeCard(gridId,key,label,tag){
+  const m=D[key];if(!m)return;
+  const div=document.createElement('div');
+  div.className='card';
+  div.innerHTML='<div class="num">'+label+'</div><h3>'+m.t+'</h3><p>'+(m.c.find(x=>x.p)?.p?.slice(0,110)+'…'||'Materi detail')+'</p><span class="tag">'+(tag||m.g)+'</span>';
+  div.onclick=()=>openMod(key);
+  document.getElementById(gridId).appendChild(div);
+}
+
+/* Summary cards */
+[1,2,3,4,5,6,7].forEach(n=>makeCard('g1',n,'Modul '+n,'Ringkasan'));
+/* UTS */
+makeCard('g2',9,'Modul 9','Evaluasi');
+/* Main modules 8, 10-17 */
+[8,10,11,12,13,14,15,16,17].forEach(n=>makeCard('g3',n,'Modul '+n,'Detail'));
+/* UAS */
+makeCard('g4',18,'Modul 18','Evaluasi');
+/* TOT + LO */
+makeCard('g5','tot','TOT 6.09','Metode');
+makeCard('g5','lo','Learning Outcomes','Capaian');
+/* References */
+makeCard('g6','ref','Acuan & Regulasi','Referensi');
+
+/* ==== SEARCH ==== */
+function doSearch(e){
+  e.preventDefault();
+  const q=document.getElementById('q').value.trim();
+  if(!q)return;
+  const url='https://www.google.com/search?q='+encodeURIComponent('shipboard electronical system '+q);
+  window.open(url,'_blank');
+}
+
+/* ==== THEME ==== */
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const html=document.documentElement;
+  const cur=html.getAttribute('data-theme');
+  if(cur==='light'){html.removeAttribute('data-theme');document.getElementById('themeBtn').textContent='🌙';}
+  else{html.setAttribute('data-theme','light');document.getElementById('themeBtn').textContent='☀️';}
+});
+</script>
+</body>
+</html>
